@@ -9,6 +9,8 @@ public class CashflowApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(CashflowApplication.class, args);
+
+		//change architecture
 	}
 
 }
