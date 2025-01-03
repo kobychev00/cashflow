@@ -6,19 +6,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CashflowController {
-    private final CashflowServiceExample cashflowServiceExample;
+    private final TransactionService transactionService;
 
-    public CashflowController(CashflowServiceExample cashflowServiceExample) {
-        this.cashflowServiceExample = cashflowServiceExample;
+    public CashflowController(TransactionService transactionService) {
+        this.transactionService = transactionService;
     }
 
-    @RequestMapping
+    @RequestMapping (path = "/hello")
     public String hello() {
-        return cashflowServiceExample.hello();
+        return "<b>hello</b>";
     }
 
     @RequestMapping(path = "/info")
     public String info(@RequestParam("name") String userName) {
-        return cashflowServiceExample.info(userName);
+        return "<b>Cashflow info</b> " + userName;
+    }
+
+    @RequestMapping(path = "/transactions/id")
+    public String id (@RequestParam("number") String id){
+        return transactionService.getTransactionById(id);
     }
 }

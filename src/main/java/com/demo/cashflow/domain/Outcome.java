@@ -6,8 +6,8 @@ import java.util.Set;
 
 public class Outcome extends Transaction{
     private Set <Integer> categoryNumbers;
-    public Outcome(String name, double sum, int categoryNumber) {
-        super(name, sum);
+    public Outcome(String id, String name, double sum, int categoryNumber) {
+        super(id, name, sum);
         this.categoryNumbers = new HashSet<>(List.of(categoryNumber));
     }
 

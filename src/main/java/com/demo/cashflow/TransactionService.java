@@ -1,11 +1,11 @@
 package com.demo.cashflow;
 
 import com.demo.cashflow.domain.Transaction;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+@Service
 public interface TransactionService {
-    List<Transaction> getTransactionById(int id);
+    String getTransactionById(String id);
 
     void addTransaction(Transaction transaction);
 
