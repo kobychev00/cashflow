@@ -7,8 +7,8 @@ import java.util.Set;
 public class Income extends Transaction {
     private Set <Integer> sourceNumbers;
 
-    public Income(String name, double sum, int sourceNumber) {
-        super(name, sum);
+    public Income(String id, String name, double sum, int sourceNumber) {
+        super(id, name, sum);
         this.sourceNumbers = new HashSet<>(List.of(sourceNumber));
     }
 

@@ -1,18 +1,22 @@
 package com.demo.cashflow.domain;
 
-import java.util.Set;
-
 public class Transaction {
+    private String id;
     private String name;
     private double sum;
 
-    public Transaction(String name, double sum) {
+    public Transaction(String id, String name, double sum) {
+        this.id = id;
         this.name = name;
         this.sum = sum;
     }
 
-    public double getSum() {
-        return sum;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -21,6 +25,10 @@ public class Transaction {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public double getSum() {
+        return sum;
     }
 
     public void setSum(int sum) {
