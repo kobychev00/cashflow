@@ -4,6 +4,7 @@ import com.demo.cashflow.domain.Income;
 import com.demo.cashflow.domain.Transaction;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -24,8 +25,12 @@ public class TransactionServiceImpl implements TransactionService {
         if (transaction == null) {
             throw new RuntimeException("Транзакция не найдена");
         }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm" );
+        String formattedDate = sdf.format(transaction.getDate().getTime());
+
         final String transactionDiscription = " "
-                + transaction.getDate() + " "
+                + formattedDate + " "
                 + transaction.getName() + " "
                 + transaction.getSum() + " ";
         return transactionDiscription;
