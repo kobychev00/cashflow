@@ -1,22 +1,29 @@
 package com.demo.cashflow.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.print.DocFlavor;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class Transaction {
-    private String id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm", timezone = "Europe/Moscow")
+    private Calendar date;
     private String name;
     private double sum;
 
-    public Transaction(String id, String name, double sum) {
-        this.id = id;
+    public Transaction(Calendar date, String name, double sum) {
+        this.date = date;
         this.name = name;
         this.sum = sum;
     }
 
-    public String getId() {
-        return id;
+    public Calendar getDate() {
+        return date;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setDate(int year, int month, int day) {
+        this.date = new GregorianCalendar(year, month, day);
     }
 
     public String getName() {

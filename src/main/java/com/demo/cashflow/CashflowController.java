@@ -17,6 +17,7 @@ public class CashflowController {
         return "<b>hello</b>";
     }
 
+    //
     @RequestMapping(path = "/info")
     public String info(@RequestParam("name") String userName) {
         return "<b>Cashflow info</b> " + userName;
