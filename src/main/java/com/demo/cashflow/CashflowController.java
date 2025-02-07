@@ -24,7 +24,11 @@ public class CashflowController {
     }
 
     @RequestMapping(path = "/transactions/id")
-    public String id (@RequestParam("number") String id){
-        return transactionService.getTransactionById(id);
+    public String getTransaction(@RequestParam("number") String id) {
+        String header1 = "<b>Search transaction by ID</b><br>";
+        String header2 = "<br><b>Result:</b><br>";
+        String result = "<br>" + transactionService.getTransactionById(id);
+
+        return header1 + header2 + result;
     }
 }

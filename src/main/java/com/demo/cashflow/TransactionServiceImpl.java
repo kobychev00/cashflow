@@ -13,11 +13,21 @@ import java.util.Map;
 public class TransactionServiceImpl implements TransactionService {
 
     Map<String, Transaction> transactions = new HashMap<>(Map.of(
-            "0001", new Income(new GregorianCalendar(2025, Calendar.JANUARY, 25), "Technopark", 15500, 1),
-            "0002", new Income(new GregorianCalendar(2025, Calendar.JANUARY, 31), "Digital4Food", 10000, 3)
+            "0001", new Income(new GregorianCalendar(2025, Calendar.JANUARY, 25), 1, 15500, 1),
+            "0002", new Income(new GregorianCalendar(2025, Calendar.JANUARY, 31), 1, 10000, 3)
     ));
 
+    Map <Integer, String> types = Map.of(
+            1, "Income",
+            2, "Outcome"
+    );
 
+    Map <Integer, String> sources = Map.of(
+            1, "Technopark",
+            2, "Detvora",
+            3, "Digital4Food",
+            4, "BKI"
+    );
 
     @Override
     public String getTransactionById(String id) {
@@ -26,14 +36,34 @@ public class TransactionServiceImpl implements TransactionService {
             throw new RuntimeException("Транзакция не найдена");
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm" );
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         String formattedDate = sdf.format(transaction.getDate().getTime());
 
-        final String transactionDiscription = " "
-                + formattedDate + " "
-                + transaction.getName() + " "
-                + transaction.getSum() + " ";
-        return transactionDiscription;
+        StringBuilder transactionDescription = new StringBuilder();
+        transactionDescription.append("<b>Date:</b> ").append(formattedDate).append("<br>")
+                .append("<b>Type:</b> ").append(transaction.getType()).append("<br>")
+                .append("<b>Amount:</b> ").append(transaction.getSum()).append("<br>");
+
+        // Если транзакция - Income, добавляем значения sourceNumbers из Map source
+        if (transaction instanceof Income) {
+            Income income = (Income) transaction;
+            StringBuilder sources = new StringBuilder();
+
+            for (Integer sourceNumber : income.getSourceNumbers()) {
+                String sourceName = this.sources.get(sourceNumber);
+                if (sourceName != null) {
+                    sources.append(sourceName).append(", ");
+                }
+            }
+
+            // Убираем лишнюю запятую и пробел в конце
+            if (sources.length() > 0) {
+                sources.setLength(sources.length() - 2);
+                transactionDescription.append("<b>Source:</b> ").append(sources);
+            }
+        }
+
+        return transactionDescription.toString();
     }
 
     @Override

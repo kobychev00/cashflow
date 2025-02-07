@@ -7,8 +7,8 @@ import java.util.Set;
 
 public class Outcome extends Transaction{
     private Set <Integer> categoryNumbers;
-    public Outcome(Calendar date, String name, double sum, int categoryNumber) {
-        super(date, name, sum);
+    public Outcome(Calendar date, int initialTypeNumber, double sum, int categoryNumber) {
+        super(date, initialTypeNumber, sum);
         this.categoryNumbers = new HashSet<>(List.of(categoryNumber));
     }
 

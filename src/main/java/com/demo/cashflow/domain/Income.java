@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 public class Income extends Transaction {
-    private Set <Integer> sourceNumbers;
+    private Set<Integer> sourceNumbers;
 
-    public Income(Calendar date, String name, double sum, int sourceNumber) {
-        super(date, name, sum);
-        this.sourceNumbers = new HashSet<>(List.of(sourceNumber));
+    public Income(Calendar date, int initialTypeNumber, double sum, int initialSourceNumber) {
+        super(date, initialTypeNumber, sum);
+        this.sourceNumbers = new HashSet<>(List.of(initialSourceNumber));
     }
 
-    public void setSourceNumbers(Set<Integer> sourceNumbers) {
-        this.sourceNumbers = sourceNumbers;
+    public Set<Integer> getSourceNumbers() {
+        return sourceNumbers;
     }
 }
