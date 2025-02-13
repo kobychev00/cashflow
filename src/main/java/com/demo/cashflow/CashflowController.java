@@ -12,23 +12,31 @@ public class CashflowController {
         this.transactionService = transactionService;
     }
 
-    @RequestMapping (path = "/hello")
+    @RequestMapping(path = "/hello" )
     public String hello() {
         return "<b>hello</b>";
     }
 
     //
-    @RequestMapping(path = "/info")
-    public String info(@RequestParam("name") String userName) {
+    @RequestMapping(path = "/info" )
+    public String info(@RequestParam("name" ) String userName) {
         return "<b>Cashflow info</b> " + userName;
     }
 
-    @RequestMapping(path = "/transactions/id")
-    public String getTransaction(@RequestParam("number") String id) {
+    @RequestMapping(path = "/transactions/id" )
+    public String getTransaction(@RequestParam("number" ) String id) {
         String header1 = "<b>Search transaction by ID</b><br>";
         String header2 = "<br><b>Result:</b><br>";
         String result = "<br>" + transactionService.getTransactionById(id);
 
+        return header1 + header2 + result;
+    }
+
+    @RequestMapping(path = "/transactions/all" )
+    public String getAllTransactions() {
+        String header1 = "<b>All Transactions</b><br>";
+        String header2 = "<br><b>Result:</b><br>";
+        String result = transactionService.getAllTransactions();
         return header1 + header2 + result;
     }
 }

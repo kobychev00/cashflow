@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 public interface TransactionService {
     String getTransactionById(String id);
 
+    String getAllTransactions();
+
     void addTransaction(Transaction transaction);
 
 }

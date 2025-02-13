@@ -39,30 +39,94 @@ public class TransactionServiceImpl implements TransactionService {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         String formattedDate = sdf.format(transaction.getDate().getTime());
 
-        StringBuilder transactionDescription = new StringBuilder();
-        transactionDescription.append("<b>Date:</b> ").append(formattedDate).append("<br>")
-                .append("<b>Type:</b> ").append(transaction.getType()).append("<br>")
-                .append("<b>Amount:</b> ").append(transaction.getSum()).append("<br>");
+        // Получаем тип транзакции из Map types
+        String typeName = types.getOrDefault(transaction.getType(), "Unknown");
 
-        // Если транзакция - Income, добавляем значения sourceNumbers из Map source
+        // Создаем таблицу с заголовками
+        StringBuilder transactionDescription = new StringBuilder();
+        transactionDescription.append("<table border='1' style='border-collapse: collapse;'>")
+                .append("<tr><th>Date</th><th>Type</th><th>Amount</th><th>Source</th></tr>")
+                .append("<tr>")
+                .append("<td>").append(formattedDate).append("</td>")
+                .append("<td>").append(typeName).append("</td>")
+                .append("<td>").append(transaction.getSum()).append("</td>");
+
+        // Проверяем, является ли транзакция доходом (Income) и добавляем источник
+        String sourceText = "-"; // Значение по умолчанию
         if (transaction instanceof Income) {
             Income income = (Income) transaction;
-            StringBuilder sources = new StringBuilder();
+            StringBuilder sourcesList = new StringBuilder();
 
             for (Integer sourceNumber : income.getSourceNumbers()) {
-                String sourceName = this.sources.get(sourceNumber);
+                String sourceName = sources.get(sourceNumber);
                 if (sourceName != null) {
-                    sources.append(sourceName).append(", ");
+                    sourcesList.append(sourceName).append(", ");
                 }
             }
 
-            // Убираем лишнюю запятую и пробел в конце
-            if (sources.length() > 0) {
-                sources.setLength(sources.length() - 2);
-                transactionDescription.append("<b>Source:</b> ").append(sources);
+            // Убираем лишнюю запятую и пробел
+            if (sourcesList.length() > 0) {
+                sourcesList.setLength(sourcesList.length() - 2);
+                sourceText = sourcesList.toString();
             }
         }
 
+        // Добавляем значение источника в таблицу
+        transactionDescription.append("<td>").append(sourceText).append("</td>")
+                .append("</tr></table>");
+
+        return transactionDescription.toString();
+    }
+
+    @Override
+    public String getAllTransactions() {
+        // Таблица с заголовками
+        StringBuilder transactionDescription = new StringBuilder();
+        transactionDescription.append("<table border='1' style='border-collapse: collapse;'>")
+                .append("<tr><th>ID</th><th>Date</th><th>Type</th><th>Amount</th><th>Source</th></tr>");
+
+        // Перебор всех транзакций
+        for (Map.Entry<String, Transaction> entry : transactions.entrySet()) {
+            String id = entry.getKey();
+            Transaction transaction = entry.getValue();
+
+            // Форматирование даты
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+            String formattedDate = sdf.format(transaction.getDate().getTime());
+
+            // Получение типа транзакции
+            String typeName = types.getOrDefault(transaction.getType(), "Unknown");
+
+            // Описание источников для типа Income
+            String sourceText = "-";
+            if (transaction instanceof Income) {
+                Income income = (Income) transaction;
+                StringBuilder sources = new StringBuilder();
+
+                for (Integer sourceNumber : income.getSourceNumbers()) {
+                    String sourceName = this.sources.get(sourceNumber);
+                    if (sourceName != null) {
+                        sources.append(sourceName).append(", ");
+                    }
+                }
+                if (sources.length() > 0) {
+                    sources.setLength(sources.length() - 2); // Убираем лишнюю запятую
+                    sourceText = sources.toString();
+                }
+            }
+
+            // Добавляем информацию о транзакции в таблицу
+            transactionDescription.append("<tr>")
+                    .append("<td>").append(id).append("</td>")
+                    .append("<td>").append(formattedDate).append("</td>")
+                    .append("<td>").append(typeName).append("</td>")
+                    .append("<td>").append(transaction.getSum()).append("</td>")
+                    .append("<td>").append(sourceText).append("</td>")
+                    .append("</tr>");
+        }
+
+        // Закрытие таблицы
+        transactionDescription.append("</table>");
         return transactionDescription.toString();
     }
 
