@@ -3,12 +3,17 @@ package com.demo.cashflow;
 import com.demo.cashflow.domain.Transaction;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public interface TransactionService {
-    String getTransactionById(String id);
 
-    String getAllTransactions();
+    List<Transaction> getAllTransactions();
 
-    void addTransaction(Transaction transaction);
+    Optional<Transaction> getTransactionById(String Id);
 
+    Transaction saveTransaction(Transaction transaction);
+
+    Transaction addTransaction(Transaction transaction);
 }
