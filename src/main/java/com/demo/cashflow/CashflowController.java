@@ -1,10 +1,13 @@
 package com.demo.cashflow;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.demo.cashflow.domain.Transaction;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/transactions" )
 public class CashflowController {
     private final TransactionService transactionService;
 
@@ -12,31 +15,27 @@ public class CashflowController {
         this.transactionService = transactionService;
     }
 
-    @RequestMapping(path = "/hello" )
-    public String hello() {
-        return "<b>hello</b>";
+    @GetMapping("hello" )
+    public ResponseEntity<String> hello() {
+        return ResponseEntity.ok("<b>hello</b>" );
     }
 
-    //
-    @RequestMapping(path = "/info" )
-    public String info(@RequestParam("name" ) String userName) {
-        return "<b>Cashflow info</b> " + userName;
+    @GetMapping("/{id}" )
+    public ResponseEntity<?> getTransactionById(@PathVariable String id) {
+        Optional<Transaction> transaction = transactionService.getTransactionById(id);
+        return transaction.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @RequestMapping(path = "/transactions/id" )
-    public String getTransaction(@RequestParam("number" ) String id) {
-        String header1 = "<b>Search transaction by ID</b><br>";
-        String header2 = "<br><b>Result:</b><br>";
-        String result = "<br>" + transactionService.getTransactionById(id);
-
-        return header1 + header2 + result;
+    @GetMapping("/all" )
+    public ResponseEntity<List<Transaction>> getAllTransactions() {
+        List<Transaction> transactions = transactionService.getAllTransactions();
+        return ResponseEntity.ok(transactions);
     }
 
-    @RequestMapping(path = "/transactions/all" )
-    public String getAllTransactions() {
-        String header1 = "<b>All Transactions</b><br>";
-        String header2 = "<br><b>Result:</b><br>";
-        String result = transactionService.getAllTransactions();
-        return header1 + header2 + result;
+    @PostMapping("/add" )
+    public ResponseEntity<Transaction> addTransation(@RequestBody Transaction transaction) {
+        Transaction savedTransaction = transactionService.addTransaction(transaction);
+        return ResponseEntity.ok(savedTransaction);
     }
 }
